@@ -1,12 +1,14 @@
 local testing = require 'src/testing'
 
+_ENV = freeze.frozen(_ENV)
+
 local suite = {}
 
 local function make_reporter()
   local container = {output = ''}
   
   local function report(...)
-    report_text = table.concat({...}, ' ')
+    local report_text = table.concat({...}, ' ')
     container.output = container.output .. report_text .. ';'
   end
   
@@ -14,7 +16,7 @@ local function make_reporter()
 end
 
 function suite.empty_test_suite_report()
-  container, report = make_reporter()
+  local container, report = make_reporter()
   
   local suite_to_test = {}
   
@@ -24,7 +26,7 @@ function suite.empty_test_suite_report()
 end
 
 function suite.failed_test_suite_reports_failed()
-  container, report = make_reporter()
+  local container, report = make_reporter()
   
   local suite_to_test = {}
   
@@ -38,7 +40,7 @@ function suite.failed_test_suite_reports_failed()
 end
 
 function suite.ok_test_suite_reports_ok()
-  container, report = make_reporter()
+  local container, report = make_reporter()
   
   local suite_to_test = {}
   

@@ -1,4 +1,8 @@
-testing = {}
+require 'src/freeze'
+
+_ENV = freeze.frozen(_ENV)
+
+local testing = {}
 
 function testing.run_all_in_suite(suite, report)
   local success_count = 0
@@ -7,7 +11,7 @@ function testing.run_all_in_suite(suite, report)
   for name, test_case in pairs(suite) do
     report('running', name)
     
-    ran_ok, result = pcall(test_case)
+    local ran_ok, result = pcall(test_case)
     
     if ran_ok and (result == true) then
       success_count = success_count + 1
