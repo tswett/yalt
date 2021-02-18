@@ -5,12 +5,16 @@ function testing.run_all_in_suite(suite, report)
   local failure_count = 0
   
   for name, test_case in pairs(suite) do
+    report('running', name)
+    
     ran_ok, result = pcall(test_case)
     
     if ran_ok and (result == true) then
       success_count = success_count + 1
+      report('ok', name)
     else
       failure_count = failure_count + 1
+      report('failed', name)
     end
   end
   

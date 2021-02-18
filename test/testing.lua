@@ -28,13 +28,27 @@ function suite.failed_test_suite_reports_failed()
   
   local suite_to_test = {}
   
-  function suite_to_test.fail()
+  function suite_to_test.always_fails()
     return false
   end
   
   testing.run_all_in_suite(suite_to_test, report)
   
-  return container.output == 'summary 0 ok;summary 1 failed;failed;'
+  return container.output == 'running always_fails;failed always_fails;summary 0 ok;summary 1 failed;failed;'
+end
+
+function suite.ok_test_suite_reports_ok()
+  container, report = make_reporter()
+  
+  local suite_to_test = {}
+  
+  function suite_to_test.always_ok()
+    return true
+  end
+  
+  testing.run_all_in_suite(suite_to_test, report)
+  
+  return container.output == 'running always_ok;ok always_ok;summary 1 ok;summary 0 failed;ok;'
 end
 
 testing.run_all_in_suite(suite, print)
