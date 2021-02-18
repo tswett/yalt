@@ -1,4 +1,4 @@
-freeze = {}
+local freeze = {}
 
 function freeze.frozen(t)
   local metatable = {}
@@ -9,7 +9,7 @@ function freeze.frozen(t)
     error('tried to set an index on a frozen table')
   end
   
-  result = {}
+  local result = {}
   setmetatable(result, metatable)
   
   return result

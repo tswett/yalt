@@ -1,4 +1,5 @@
 local testing = require 'src/testing'
+local freeze = require 'src/freeze'
 
 _ENV = freeze.frozen(_ENV)
 
