@@ -4,7 +4,7 @@ _ENV = freeze.frozen(_ENV)
 
 local testing = {}
 
-function testing.run_all_in_suite(suite, report)
+function testing.run_all_in_suite(suite, report, report_errors)
   local success_count = 0
   local failure_count = 0
   
@@ -18,6 +18,9 @@ function testing.run_all_in_suite(suite, report)
       report('ok', name)
     else
       failure_count = failure_count + 1
+      if (not ran_ok) and report_errors then
+        report('error', name, result)
+      end
       report('failed', name)
     end
   end

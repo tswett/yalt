@@ -6,7 +6,7 @@ function freeze.frozen(t)
   metatable.__index = t
   
   function metatable.__newindex(table, key, value)
-    error('tried to set an index on a frozen table')
+    error('tried to set an index on a frozen table', 2)
   end
   
   local result = {}
