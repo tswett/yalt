@@ -56,4 +56,14 @@ function suite.these_are_not_letters()
   return not wrong
 end
 
+function suite.can_iterate_over_chars()
+  local char_list = {}
+  
+  for char in sexpressions.chars('ab') do
+    table.insert(char_list, char)
+  end
+  
+  return (#char_list == 2) and (char_list[1] == 'a') and (char_list[2] == 'b')
+end
+
 testing.run_all_in_suite(suite, print, true)
