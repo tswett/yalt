@@ -34,4 +34,11 @@ function suite.nested_evaluation_works()
   return success
 end
 
+function suite.combinator_k_works()
+  local success =
+    combcalc.ski_reduce (sx {{'k', 'X'}, 'Y'}) == 'X'
+  
+  return success
+end
+
 testing.run_all_in_suite(suite, print, true)
