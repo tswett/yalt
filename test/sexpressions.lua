@@ -6,6 +6,8 @@ _ENV = freeze.frozen(_ENV)
 
 local suite = {}
 
+local sx = sexpressions.sexpression
+
 function suite.can_parse_a_string_of_letters()
   local success, result = sexpressions.parse('hello')
   
@@ -67,40 +69,39 @@ function suite.can_iterate_over_chars()
 end
 
 function suite.can_make_an_empty_sexpression()
-  local sexpr = sexpressions.sexpression {}
+  local sexpr = sx {}
   
   return #sexpr == 0
 end
 
 function suite.can_make_a_nonempty_sexpression()
-  local sexpr = sexpressions.sexpression {'a', 'b'}
+  local sexpr = sx {'a', 'b'}
   
   return #sexpr == 2 and sexpr[1] == 'a' and sexpr[2] == 'b'
 end
 
 function suite.can_convert_an_empty_sexpression_to_string()
-  local sexpr = sexpressions.sexpression {}
+  local sexpr = sx {}
   
   return tostring(sexpr) == '()'
 end
 
 function suite.can_convert_a_nonempty_sexpression_to_string()
-  local sexpr = sexpressions.sexpression {'a', 'b'}
+  local sexpr = sx {'a', 'b'}
   
   return tostring(sexpr) == '(a b)'
 end
 
 function suite.sexpressions_compare_correctly()
-  local sexpr_a_1 = sexpressions.sexpression {'a'}
-  local sexpr_a_2 = sexpressions.sexpression {'a'}
-  local sexpr_b = sexpressions.sexpression {'b'}
-  local sexpr_abc_1 = sexpressions.sexpression {'a', sexpressions.sexpression {'b', 'c'}}
-  local sexpr_abc_2 = sexpressions.sexpression {'a', sexpressions.sexpression {'b', 'c'}}
-  local sexpr_adc = sexpressions.sexpression {'a', sexpressions.sexpression {'d', 'c'}}
-  local sexpr_xyz_1 = sexpressions.sexpression {sexpressions.sexpression {'x', 'y'}, 'z'}
-  local sexpr_xyz_2 = sexpressions.sexpression {sexpressions.sexpression {'x', 'y'}, 'z'}
-  local sexpr_xwz = sexpressions.sexpression {sexpressions.sexpression {'x', 'w'}, 'z'}
-  
+  local sexpr_a_1 = sx {'a'}
+  local sexpr_a_2 = sx {'a'}
+  local sexpr_b = sx {'b'}
+  local sexpr_abc_1 = sx {'a', sx {'b', 'c'}}
+  local sexpr_abc_2 = sx {'a', sx {'b', 'c'}}
+  local sexpr_adc = sx {'a', sx {'d', 'c'}}
+  local sexpr_xyz_1 = sx {sx {'x', 'y'}, 'z'}
+  local sexpr_xyz_2 = sx {sx {'x', 'y'}, 'z'}
+  local sexpr_xwz = sx {sx {'x', 'w'}, 'z'}
   
   local success =
     sexpr_a_1 == sexpr_a_2 and
@@ -110,6 +111,14 @@ function suite.sexpressions_compare_correctly()
     sexpr_abc_1 ~= sexpr_adc and
     sexpr_xyz_1 == sexpr_xyz_2 and
     sexpr_xyz_1 ~= sexpr_xwz
+  
+  return success
+end
+
+function suite.can_make_recursive_sexpression()
+  local sexpr = sx {'a', {'b', 'c'}, {'d', 'e'}}
+  
+  local success = sexpr == sx {'a', sx {'b', 'c'}, sx {'d', 'e'}}
   
   return success
 end

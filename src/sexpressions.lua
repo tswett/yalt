@@ -62,7 +62,11 @@ function sexpressions.sexpression(input)
   local sexpr = {}
   
   for i, v in ipairs(input) do
-    sexpr[i] = v
+    if type(v) == 'table' then
+      sexpr[i] = sexpressions.sexpression(v)
+    else
+      sexpr[i] = v
+    end
   end
   
   setmetatable(sexpr, sexpressions.sexpression_metatable)
