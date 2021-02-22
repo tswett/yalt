@@ -44,6 +44,20 @@ function sexpressions.sexpression_metatable.__tostring(sexpr)
   return '(' .. table.concat(contents_strings, ' ') .. ')'
 end
 
+function sexpressions.sexpression_metatable.__eq(sexpr1, sexpr2)
+  if #sexpr1 ~= #sexpr2 then
+    return false
+  end
+  
+  for i, v in ipairs(sexpr1) do
+    if sexpr1[i] ~= sexpr2[i] then
+      return false
+    end
+  end
+  
+  return true
+end
+
 function sexpressions.sexpression(input)
   local sexpr = {}
   

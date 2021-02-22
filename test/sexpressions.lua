@@ -90,4 +90,28 @@ function suite.can_convert_a_nonempty_sexpression_to_string()
   return tostring(sexpr) == '(a b)'
 end
 
+function suite.sexpressions_compare_correctly()
+  local sexpr_a_1 = sexpressions.sexpression {'a'}
+  local sexpr_a_2 = sexpressions.sexpression {'a'}
+  local sexpr_b = sexpressions.sexpression {'b'}
+  local sexpr_abc_1 = sexpressions.sexpression {'a', sexpressions.sexpression {'b', 'c'}}
+  local sexpr_abc_2 = sexpressions.sexpression {'a', sexpressions.sexpression {'b', 'c'}}
+  local sexpr_adc = sexpressions.sexpression {'a', sexpressions.sexpression {'d', 'c'}}
+  local sexpr_xyz_1 = sexpressions.sexpression {sexpressions.sexpression {'x', 'y'}, 'z'}
+  local sexpr_xyz_2 = sexpressions.sexpression {sexpressions.sexpression {'x', 'y'}, 'z'}
+  local sexpr_xwz = sexpressions.sexpression {sexpressions.sexpression {'x', 'w'}, 'z'}
+  
+  
+  local success =
+    sexpr_a_1 == sexpr_a_2 and
+    sexpr_a_1 ~= sexpr_b and
+    sexpr_a_1 ~= 'a' and
+    sexpr_abc_1 == sexpr_abc_2 and
+    sexpr_abc_1 ~= sexpr_adc and
+    sexpr_xyz_1 == sexpr_xyz_2 and
+    sexpr_xyz_1 ~= sexpr_xwz
+  
+  return success
+end
+
 testing.run_all_in_suite(suite, print, true)
