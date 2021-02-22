@@ -32,6 +32,30 @@ function sexpressions.chars(str)
   return next_char
 end
 
+sexpressions.sexpression_metatable = {}
+
+function sexpressions.sexpression_metatable.__tostring(sexpr)
+  local contents_strings = {}
+  
+  for i, v in ipairs(sexpr) do
+    contents_strings[i] = tostring(v)
+  end
+  
+  return '(' .. table.concat(contents_strings, ' ') .. ')'
+end
+
+function sexpressions.sexpression(input)
+  local sexpr = {}
+  
+  for i, v in ipairs(input) do
+    sexpr[i] = v
+  end
+  
+  setmetatable(sexpr, sexpressions.sexpression_metatable)
+  
+  return sexpr
+end
+
 function sexpressions.parse(input)
   if type(input) ~= 'string' then
     return false

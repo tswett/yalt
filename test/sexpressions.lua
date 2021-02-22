@@ -66,4 +66,28 @@ function suite.can_iterate_over_chars()
   return (#char_list == 2) and (char_list[1] == 'a') and (char_list[2] == 'b')
 end
 
+function suite.can_make_an_empty_sexpression()
+  local sexpr = sexpressions.sexpression {}
+  
+  return #sexpr == 0
+end
+
+function suite.can_make_a_nonempty_sexpression()
+  local sexpr = sexpressions.sexpression {'a', 'b'}
+  
+  return #sexpr == 2 and sexpr[1] == 'a' and sexpr[2] == 'b'
+end
+
+function suite.can_convert_an_empty_sexpression_to_string()
+  local sexpr = sexpressions.sexpression {}
+  
+  return tostring(sexpr) == '()'
+end
+
+function suite.can_convert_a_nonempty_sexpression_to_string()
+  local sexpr = sexpressions.sexpression {'a', 'b'}
+  
+  return tostring(sexpr) == '(a b)'
+end
+
 testing.run_all_in_suite(suite, print, true)
