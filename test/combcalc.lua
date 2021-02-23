@@ -41,4 +41,11 @@ function suite.combinator_k_works()
   return success
 end
 
+function suite.combinator_s_works()
+  local success =
+    combcalc.ski_reduce (sx {{{'s', 'X'}, 'Y'}, 'Z'}) == sx {{'X', 'Z'}, {'Y', 'Z'}}
+  
+  return success
+end
+
 testing.run_all_in_suite(suite, print, true)

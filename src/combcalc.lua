@@ -48,6 +48,17 @@ function combcalc.ski_reduce(input)
     if head(head(input)) == 'k' then
       return combcalc.ski_reduce(tail(head(input)))
     end
+    
+    if head(head(head(input))) == 's' then
+      local x = tail(head(head(input)))
+      local y = tail(head(input))
+      local z = tail(input)
+      
+      -- print('ski_reduce on ' .. tostring(input) .. ': evaluating s; x is ' .. tostring(x) ..
+      --   ', y is ' .. tostring(y) .. ', z is ' .. tostring(z))
+      
+      return combcalc.ski_reduce(sx {{x, z}, {y, z}})
+    end
   end
   
   -- print('ski_reduce on ' .. tostring(input) .. ': could not reduce any further')
