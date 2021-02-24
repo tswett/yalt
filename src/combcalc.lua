@@ -27,6 +27,50 @@ end
 
 local tail = combcalc.tail
 
+function combcalc.step_i(skip, input)
+  if skip then
+    return true, input
+  end
+  
+  if head(input) == 'i' then
+    local x = tail(input)
+    
+    return true, x
+  else
+    return false, input
+  end
+end
+
+function combcalc.step_k(skip, input)
+  if skip then
+    return true, input
+  end
+  
+  if head(head(input)) == 'k' then
+    local x = tail(head(input))
+    
+    return true, x
+  else
+    return false, input
+  end
+end
+
+function combcalc.step_s(skip, input)
+  if skip then
+    return true, input
+  end
+  
+  if head(head(head(input))) == 's' then
+    local x = tail(head(head(input)))
+    local y = tail(head(input))
+    local z = tail(input)
+    
+    return true, sx {{x, z}, {y, z}}
+  else
+    return false, input
+  end
+end
+
 function combcalc.ski_reduce(input)
   -- print('ski_reduce: entering with input ' .. tostring(input))
   
@@ -41,23 +85,12 @@ function combcalc.ski_reduce(input)
       return combcalc.ski_reduce(sx {head_evaluated, tail(input)})
     end
     
-    if head(input) == 'i' then
-      return combcalc.ski_reduce(tail(input))
-    end
-    
-    if head(head(input)) == 'k' then
-      return combcalc.ski_reduce(tail(head(input)))
-    end
-    
-    if head(head(head(input))) == 's' then
-      local x = tail(head(head(input)))
-      local y = tail(head(input))
-      local z = tail(input)
-      
-      -- print('ski_reduce on ' .. tostring(input) .. ': evaluating s; x is ' .. tostring(x) ..
-      --   ', y is ' .. tostring(y) .. ', z is ' .. tostring(z))
-      
-      return combcalc.ski_reduce(sx {{x, z}, {y, z}})
+    local stepped, result = false, input
+    stepped, result = combcalc.step_s(stepped, result)
+    stepped, result = combcalc.step_k(stepped, result)
+    stepped, result = combcalc.step_i(stepped, result)
+    if stepped then
+      return combcalc.ski_reduce(result)
     end
   end
   
