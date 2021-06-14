@@ -38,6 +38,12 @@ function suite.can_parse_an_underscore()
   return success and (result == '_')
 end
 
+function suite.can_parse_an_empty_list()
+  local success, result = sexpressions.parse('()')
+  
+  return success and (result == sx {})
+end
+
 function suite.these_are_letters()
   local ok =
     sexpressions.is_letter('A') and
@@ -121,6 +127,36 @@ function suite.can_make_recursive_sexpression()
   local success = sexpr == sx {'a', sx {'b', 'c'}, sx {'d', 'e'}}
   
   return success
+end
+
+function suite.can_parse_atom_from_index()
+  local test_expression = '(one (two three))'
+  
+  local parse_success, atom, new_index = sexpressions.parse_atom_from(test_expression, 1)
+  
+  if not (not parse_success) then
+    return false
+  end
+  
+  local parse_success, atom, new_index = sexpressions.parse_atom_from(test_expression, 2)
+  
+  if not (parse_success and atom == 'one' and new_index == 5) then
+    return false
+  end
+  
+  local parse_success, atom, new_index = sexpressions.parse_atom_from(test_expression, 7)
+  
+  if not (parse_success and atom == 'two' and new_index == 10) then
+    return false
+  end
+  
+  local parse_success, atom, new_index = sexpressions.parse_atom_from(test_expression, 11)
+  
+  if not (parse_success and atom == 'three' and new_index == 16) then
+    return false
+  end
+  
+  return true
 end
 
 testing.run_all_in_suite(suite, print, true)

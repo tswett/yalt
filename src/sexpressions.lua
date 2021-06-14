@@ -16,8 +16,8 @@ function sexpressions.is_letter(char)
   end
 end
 
-function sexpressions.chars(str)
-  local index = 1
+function sexpressions.chars(str, index)
+  index = index or 1
   
   local function next_char()
     if #str < index then
@@ -90,6 +90,35 @@ function sexpressions.parse(input)
   end
   
   return true, input
+end
+
+function sexpressions.parse_atom_from(input, index)
+  index = index or 1
+  
+  if type(input) ~= 'string' then
+    return false
+  end
+  
+  if #input < index then
+    return false
+  end
+  
+  local atom = ''
+  
+  for char in sexpressions.chars(input, index) do
+    if char == '_' or sexpressions.is_letter(char) then
+      atom = atom .. char
+      index = index + 1
+    else
+      break
+    end
+  end
+  
+  if atom == '' then
+    return false
+  else
+    return true, atom, index
+  end
 end
 
 return sexpressions
